@@ -241,12 +241,12 @@ if "click_target_name" in query_params and "click_target_url" in query_params:
 
 # --- タイトル表示 ---
 st.markdown("<div class='main-title'>¿Quieres AI?</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub-title'>何がしたいか入力してね！世界中のあらゆるAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub-title'>何がしたいかを入力。世界中のあらゆるAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
 st.divider()
 
 # --- 💬 自作エンブレム表示 ---
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "お疲れ様です。今日はどんな作業をしますか？"}]
+    st.session_state.messages = [{"role": "assistant", "content": "今日はどんな作業をしますか？"}]
 
 for message in st.session_state.messages:
     is_ai = (message["role"] == "assistant")
