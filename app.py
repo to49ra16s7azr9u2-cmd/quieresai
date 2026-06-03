@@ -9,30 +9,31 @@ from openai import OpenAI
 # --- ページ全体の基本設定 ---
 st.set_page_config(
     page_title="キエレスAI (¿Quieres AI?)",
-    page_icon="🧩",
+    # 🧩の代わりに、ミ・キンセナ風のネオンブルー＆パープルの美しいグラデーションSVG画像をファビコンに指定
+    page_icon="https://pub-c5e31b5cdafb419a86a69d5d343ea9cc.r2.dev/kieres_favicon.svg",
     layout="centered"
 )
 
-# --- 🎨 限界突破：外資系ハイエンドSaaS風 グラスモルフィズムCSS ---
+# --- 🎨 極限のディテール：外資系テック・ネオンエンブレムCSS ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
-    /* 1. 全体のベース（背景・最高峰のフォントシステム） */
+    /* 1. グローバルフォント＆漆黒グラデーション */
     .stApp {
-        background: linear-gradient(135deg, #060814 0%, #0b0b1e 50%, #15112a 100%);
+        background: linear-gradient(135deg, #040612 0%, #0a0a1a 50%, #120e24 100%);
         color: #ffffff !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
     
-    /* 2. 【最重要】もっさり感を消すため、メインコンテンツの横幅を拡張・最適化 */
+    /* 2. メインコンテンツの横幅拡張（もっさり感の排除） */
     [data-testid="stMainBlockContainer"] {
         max-width: 900px !important;
         padding-top: 4rem !important;
         padding-bottom: 6rem !important;
     }
     
-    /* 3. メインタイトル：圧倒的モダンなタイポグラフィ */
+    /* 3. メインタイトル */
     .main-title {
         font-size: 3.6rem !important;
         font-weight: 800 !important;
@@ -44,7 +45,7 @@ st.markdown("""
         margin-bottom: 0.4rem;
     }
     
-    /* 4. サブタイトル：繊細なホワイトウエイト */
+    /* 4. サブタイトル */
     .sub-title {
         text-align: center;
         color: rgba(255, 255, 255, 0.7) !important;
@@ -54,7 +55,7 @@ st.markdown("""
         margin-bottom: 3.5rem;
     }
     
-    /* 5. 入力エリア周囲の完全ステルス化（余白の無駄な浮きを排除） */
+    /* 5. 入力エリア周囲の完全ステルス化 */
     [data-testid="stChatInputBottomBlankArea"] {
         background: transparent !important;
         background-color: transparent !important;
@@ -89,7 +90,7 @@ st.markdown("""
         color: #38bdf8 !important;
     }
     
-    /* 7. 【劇的進化】チャットボックス：洗練された薄ガラスのコンテナデザイン */
+    /* 7. チャットボックス：洗練された薄ガラスのコンテナデザイン */
     [data-testid="stChatMessage"] {
         background-color: rgba(255, 255, 255, 0.02) !important;
         backdrop-filter: blur(16px) !important;
@@ -98,10 +99,9 @@ st.markdown("""
         padding: 1.5rem !important;
         margin-bottom: 1.5rem !important;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s ease;
     }
     
-    /* 8. テキスト表示の完全統一（パキッとしたホワイトと美しい行間） */
+    /* 8. テキスト表示の完全ホワイトアウト＆ハイパーリンク */
     [data-testid="stChatMessage"] p, 
     [data-testid="stChatMessage"] li, 
     [data-testid="stChatMessage"] ol, 
@@ -114,8 +114,6 @@ st.markdown("""
         line-height: 1.75 !important;
         letter-spacing: -0.01em !important;
     }
-    
-    /* テック系特有の洗練されたスマートリンク（下線を消し、ホバーで滑らかに変色） */
     [data-testid="stChatMessage"] a {
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
@@ -130,11 +128,43 @@ st.markdown("""
         border-bottom-color: rgba(192, 132, 252, 0.6);
     }
     
-    /* 9. アバターアイコンのスマート枠線化 */
+    /* 9. 【超重要】Streamlit標準アバターを非表示にし、独自ネオンエンブレムを強制適用 */
     [data-testid="stChatMessageAvatar"] {
-        background-color: rgba(255, 255, 255, 0.04) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 10px !important;
+        display: none !important;
+    }
+    
+    /* 10. 🎨 【Mi Quincena風】自作エンブレムのインフラ設計 */
+    .custom-avatar-wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.2rem;
+    }
+    
+    /* AIコンシェルジュ：ネオンシームレスグラデーション */
+    .avatar-ai {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+        box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+    }
+    
+    /* ユーザー：モダン・スモークガラス */
+    .avatar-user {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+    }
+    
+    .chat-content-area {
+        flex-grow: 1;
     }
     
     /* ミニマルなローディングプログレスバー */
@@ -206,30 +236,48 @@ st.markdown("<div class='main-title'>¿Quieres AI?</div>", unsafe_allow_html=Tru
 st.markdown("<div class='sub-title'>何がしたいか入力してね！世界中のあらゆるAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
 st.divider()
 
+# --- 💬 自作エンブレムをチャットHTMLに直接インジェクションして表示 ---
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "今日はどんな作業をしますか？"}]
+    st.session_state.messages = [{"role": "assistant", "content": "¡Hola! 今日はどんな作業やリサーチをしますか？"}]
 
 for message in st.session_state.messages:
-    avatar_icon = "🧩" if message["role"] == "assistant" else "✨"
-    with st.chat_message(message["role"], avatar=avatar_icon):
-        st.markdown(message["content"])
+    is_ai = (message["role"] == "assistant")
+    avatar_class = "avatar-ai" if is_ai else "avatar-user"
+    
+    with st.chat_message(message["role"]):
+        st.markdown(f"""
+        <div class="custom-avatar-wrapper">
+            <div class="{avatar_class}"></div>
+            <div class="chat-content-area">{message["content"]}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
+# --- 入力・応答処理 ---
 if user_input := st.chat_input("ここにメッセージを入力..."):
-    with st.chat_message("user", avatar="✨"):
-        st.markdown(user_input)
+    # ユーザー発言のインジェクション表示
+    with st.chat_message("user"):
+        st.markdown(f"""
+        <div class="custom-avatar-wrapper">
+            <div class="avatar-user"></div>
+            <div class="chat-content-area">{user_input}</div>
+        </div>
+        """, unsafe_allow_html=True)
     st.session_state.messages.append({"role": "user", "content": user_input})
     
-    with st.chat_message("assistant", avatar="🧩"):
+    with st.chat_message("assistant"):
         message_placeholder = st.empty()
         
-        # 🛠️ 固定タイマーを廃止し、AIの生成中（通信中）だけ的確に回り続けるローディングバー
         with st.spinner("AIコンシェルジュが思考中..."):
-            
             api_key = st.secrets.get("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY")
             
             if not api_key:
                 response = "⚠️ OpenAI API Keyが設定されていません。"
-                message_placeholder.markdown(response)
+                message_placeholder.markdown(f"""
+                <div class="custom-avatar-wrapper">
+                    <div class="avatar-ai"></div>
+                    <div class="chat-content-area">{response}</div>
+                </div>
+                """, unsafe_allow_html=True)
             else:
                 try:
                     client = OpenAI(api_key=api_key)
@@ -239,16 +287,24 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
                     for m in st.session_state.messages[-6:]:
                         api_messages.append({"role": "assistant" if m["role"] == "assistant" else "user", "content": m["content"]})
                     
-                    # ここでOpenAIと通信している間、スピナー（バー）が的確に波打ち続けます
                     completion = client.chat.completions.create(model="gpt-4o-mini", messages=api_messages)
                     response = completion.choices[0].message.content
                     
-                    # 生成が完了した瞬間に、自動でローディングが消えて回答が表示されます
-                    message_placeholder.markdown(response)
+                    # アシスタント回答のインジェクション表示
+                    message_placeholder.markdown(f"""
+                    <div class="custom-avatar-wrapper">
+                        <div class="avatar-ai"></div>
+                        <div class="chat-content-area">{response}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
                     save_chat_log(user_input, response, "jp")
-                    
                 except Exception as e:
                     response = f"エラーが発生しました: {str(e)}"
-                    message_placeholder.markdown(response)
+                    message_placeholder.markdown(f"""
+                    <div class="custom-avatar-wrapper">
+                        <div class="avatar-ai"></div>
+                        <div class="chat-content-area">{response}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
                 
     st.session_state.messages.append({"role": "assistant", "content": response})
