@@ -1,0 +1,332 @@
+[
+  {
+    "category": "論文検索・文献リサーチ・医療専門",
+    "name": "Consensus",
+    "url": "https://consensus.app/",
+    "desc": "質問を投げると、何万もの学術論文から科学的根拠を抽出してYes/Noの割合まで可視化するAI検索。(無料枠あり)"
+  },
+  {
+    "category": "論文検索・文献リサーチ・医療専門",
+    "name": "scite",
+    "url": "https://scite.ai/",
+    "desc": "他の論文から「支持されているか」「批判されているか」の文脈をAIが自動分類する、信頼性検証の最高峰。(無料枠あり)"
+  },
+  {
+    "category": "論文検索・文献リサーチ・医療専門",
+    "name": "Elicit",
+    "url": "https://elicit.org/",
+    "desc": "膨大な論文から「データセット規模」や「実験方法」を自動抽出し、表形式で一括比較できる研究の神ツール。(無料枠あり)"
+  },
+  {
+    "category": "論文検索・文献リサーチ・医療専門",
+    "name": "SciSpace",
+    "url": "https://typeset.io/",
+    "desc": "論文PDFの数式や専門用語をハイライトするだけで、AIがその場で直感的に解説する解析ツール。(無料枠あり)"
+  },
+  {
+    "category": "論文検索・文献リサーチ・医療専門",
+    "name": "Isomorphic Labs / AlphaFold 3",
+    "url": "https://www.isomorphiclabs.com/",
+    "desc": "Google DeepMind発。タンパク質や分子の構造を予測し、新薬開発を数千倍に加速させる最先端科学AI。(研究者向け)"
+  },
+  {
+    "category": "論文検索・文献リサーチ・医療専門",
+    "name": "Google Scholar",
+    "url": "https://scholar.google.com/",
+    "desc": "世界最大の学術ネットワークから正確な被引用数と論文URLを瞬時にリサーチ。(無料)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "NVIDIA ChatRTX",
+    "url": "https://www.nvidia.com/ja-jp/ai-data-science/products/chatrtx/",
+    "desc": "自分のPC内（RTXグラフィックス）で、完全にオフラインで安全かつ爆速にデータ解析や資料要約を行うNVIDIA製ローカルAI。(無料)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "Zerve",
+    "url": "https://www.zerve.ai/",
+    "desc": "データサイエンス・統計分析に特化。コードの文脈やデータ構造を完全に維持したまま並列で開発・実験をアシストする環境。(無料枠あり)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "Claude 3.5 Sonnet",
+    "url": "https://claude.ai/",
+    "desc": "データやコードを元に、インタラクティブで見やすいグラフやダッシュボード（Artifacts機能）を画面上に即座に作る能力がダントツ。(無料枠あり)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "ChatGPT Advanced Data Analysis",
+    "url": "https://chatgpt.com/",
+    "desc": "エクセル、CSV、決算書を投げるだけで、pythonを裏で走らせてデータクリーニングから未来予測まで全自動化。(有料)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "Julius AI",
+    "url": "https://julius.ai/",
+    "desc": "高度な統計処理（回帰分析、因果推論の検証など）や複雑なグラフ作成の精度が極めて高いデータサイエンス特化型。(無料枠あり)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "Harvey AI",
+    "url": "https://www.harvey.ai/",
+    "desc": "世界のトップファームが独占契約する、契約書解析や判例リサーチに圧倒的強みを持つプロフェッショナル法律AI。(法人向け)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "Heimdall AI",
+    "url": "https://www.heimdall.ai/",
+    "desc": "ガバナンスやデータセキュリティ、プロンプトインジェクション対策を自動で行う、企業向けAI運用のための防衛線。(無料枠あり)"
+  },
+  {
+    "category": "財務分析・データ解析・NVIDIAローカル",
+    "name": "Ollama",
+    "url": "https://ollama.com/",
+    "desc": "【新規追加】自分のローカルPC上でLlama 3やMistralなどの強力なオープンソースLLMを爆速でダウンロード・起動できるエンジニア必須ツール。(無料)"
+  },
+  {
+    "category": "録音・文字起こし・AI議事録",
+    "name": "Notta",
+    "url": "https://www.notta.ai/",
+    "desc": "日本語のリアルタイム録音・文字起こしにおいて最高峰の精度を誇り、重要な会話を一瞬でAIが章立て議事録にしてくれるツール。(無料枠あり)"
+  },
+  {
+    "category": "録音・文字起こし・AI議事録",
+    "name": "PLAUD NOTE",
+    "url": "https://www.plaud.ai/",
+    "desc": "ChatGPT連携の録音デバイス・アプリ。対面会議や通話音声を爆速でテキスト化し、マインドマップ風の要約も自動生成。(アプリ無料枠あり)"
+  },
+  {
+    "category": "録音・文字起こし・AI議事録",
+    "name": "Otter.ai",
+    "url": "https://otter.ai/",
+    "desc": "英語の文字起こし・リアルタイムミーティング議事録のグローバル絶対王者。海外の講義や会議に必須。(無料枠あり)"
+  },
+  {
+    "category": "録音・文字起こし・AI議事録",
+    "name": "Vizard AI",
+    "url": "https://vizard.ai/",
+    "desc": "【新規追加】長時間の講義や会議の録画・録音データから、SNS（TikTok等）向けのバズるショート動画をAIが自動で文字起こし・編集して切り出すツール。(無料枠あり)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "NVIDIA ACE",
+    "url": "https://www.nvidia.com/ja-jp/ai-data-science/products/ace/",
+    "desc": "ゲームやメタバース上のデジタルアバターに、リアルタイムで人間らしい自然な会話や表情を生成・連動させるNVIDIAの最高峰音声・対話AI。(開発者向け)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "DeepSeek",
+    "url": "https://www.deepseek.com/",
+    "desc": "圧倒的な推論・文章解析能力を「完全無料」で提供する驚異の最先端オープンソースAI。(無料)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "NotebookLM",
+    "url": "https://notebooklm.google/",
+    "desc": "手元のPDFやメモをアップロードすると、その情報だけに完全に基づいた「嘘をつかない自分専用の専門家AI」を作るリサーチ特化型。(無料)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "Napkin AI",
+    "url": "https://www.napkin.ai/",
+    "desc": "文章を打ち込むだけで、その文脈にぴったりの「美しい図解やインフォグラフィック」を一瞬で自動生成する資料作成の神ツール。(無料枠あり)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "Gamma",
+    "url": "https://gamma.app/",
+    "desc": "1行のテーマを伝えるだけで、プロレベルの美しいデザインのプレゼンスライドを構成から画像まで丸ごと自動生成。(無料枠あり)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "Beautiful.ai",
+    "url": "https://www.beautiful.ai/",
+    "desc": "【新規追加】文字の量に合わせてレイアウトを自動調整し、誰が作っても絶対にデザインが崩れない洗練されたピッチスライド作成AI。(有料)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "Gemini 1.5 Pro",
+    "url": "https://gemini.google.com/",
+    "desc": "本10冊分の超膨大な資料や、数時間の講義動画を丸ごと読み込ませて一瞬で要約・解析できる怪物AI。(無料枠あり)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "Perflow",
+    "url": "https://www.perflow.ai/",
+    "desc": "マーケティング最適化とUI/UXグロースハックを自律的に行う、2026年最注目の次世代マーケティングAI。(無料枠あり)"
+  },
+  {
+    "category": "文章作成・プレゼン図解・マーケティング・NVIDIA ACE",
+    "name": "Command R+ (Cohere)",
+    "url": "https://cohere.com/",
+    "desc": "【新規追加】企業の社内文書検索（RAG）や多言語での長文要約・文章生成に特化した、BtoBビジネスで絶大な信頼を得る大規模言語モデル。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "CapCut AI",
+    "url": "https://www.capcut.com/",
+    "desc": "テキストを入れるだけで、自動で台本・音声・字幕付きの動画をハイクオリティに生成。(無料)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Runway Gen-3",
+    "url": "https://runwayml.com/",
+    "desc": "映画クオリティの超リアルな映像をテキストから生成する最先端動画AI。(有料)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Luma Dream Machine",
+    "url": "https://lumalabs.ai/dream-machine",
+    "desc": "【新規追加】物理法則を驚くほど正確に再現し、滑らかでカメラワークの効いたハイクオリティな動画を爆速生成する動画生成AI。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Kling AI",
+    "url": "https://klingai.com/",
+    "desc": "【新規追加】実写と見紛うレベルの超リアルなショートフィルムや、最大2分間のシームレスな長尺映像を生成できる最先端動画AI。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Midjourney",
+    "url": "https://www.midjourney.com/",
+    "desc": "芸術コンテストで賞が取れるレベルの最高峰グラフィック・絵を生成する画像AIの王者。(有料)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Suno AI",
+    "url": "https://suno.com/",
+    "desc": "作りたい曲のイメージを入力するだけで、プロレベルの歌声・伴奏付きの楽曲を2曲同時に爆速生成する音楽AIの頂点。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Udio",
+    "url": "https://www.udio.com/",
+    "desc": "【新規追加】高音質なボーカルと複雑な楽器のアンサンブルを生成し、Sunoと音楽AIの覇権を二分する超ハイクオリティ音楽生成AI。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "ElevenLabs",
+    "url": "https://elevenlabs.io/",
+    "desc": "人間と区別がつかないレベルのリアルな感情表現・声色の変化が可能な世界トップの音声合成AI。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "HeyGen",
+    "url": "https://www.heygen.com/",
+    "desc": "自分の動画をアップロードするだけで、口の動きまで完璧に合わせた多言語翻訳動画を作れるローカライズAI。(無料枠あり)"
+  },
+  {
+    "category": "動画・画像・音声・音楽・3D生成",
+    "name": "Meshy",
+    "url": "https://www.meshy.ai/",
+    "desc": "テキストや画像から、ゲームエンジンやメタバースでそのまま動かせる超高精細な3Dモデルを爆速自動生成する3D AI。(無料枠あり)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "Cursor",
+    "url": "https://www.cursor.com/",
+    "desc": "プロジェクト全体の構造を理解し、指示だけでアプリを完成させる最強のAIエディタ。(無料枠あり)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "Windsurf",
+    "url": "https://codeium.com/windsurf",
+    "desc": "最先端の次世代エージェントAIが、開発者に代わってバグを自律的に探して修正する超新星エディタ。(無料枠あり)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "Bolt.new",
+    "url": "https://bolt.new/",
+    "desc": "ブラウザ上で、プロンプトによる指示だけでフルスタックWebアプリを構築・デプロイまで完結させる開発のゲームチェンジャー。(無料枠あり)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "Lovable",
+    "url": "https://lovable.dev/",
+    "desc": "【新規追加】「こんなWebサービスを作って」とチャットするだけで、バックエンドのデータベース構築まで含めた完璧なアプリを一瞬で自動生成するノーコードAI。(無料枠あり)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "Relume",
+    "url": "https://www.relume.io/",
+    "desc": "AIがサイトの構成（ワイヤーフレーム）を自動構築し、FigmaやWebflowへ一瞬でコンポーネントを出力する爆速サイトデザインツール。(無料枠あり)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "v0",
+    "url": "https://v0.dev/",
+    "desc": "「こんな見た目のUIやサイトが欲しい」と言うだけで、Vercelが誇る最高峰のフロントエンドコードを一瞬で生成。(無料)"
+  },
+  {
+    "category": "コード作成・フルスタックアプリ・WEBデザイン",
+    "name": "Spline AI",
+    "url": "https://spline.design/",
+    "desc": "テキストによる指示だけで、Webサイトに埋め込める立体的な3Dオブジェクトやアニメーションを自動生成。(無料枠あり)"
+  },
+  {
+    "category": "自動化・ワークフロー・翻訳",
+    "name": "Zapier Central",
+    "url": "https://zapier.com/central",
+    "desc": "何千もの外部アプリとAIを連携させ、独自の自律型自動化ワークフローをチャットで構築できるシステム。(無料枠あり)"
+  },
+  {
+    "category": "自動化・ワークフロー・翻訳",
+    "name": "Make / Celonis",
+    "url": "https://www.make.com/",
+    "desc": "【新規追加】Zapierのライバル。視覚的なマップ上で複数の高度なSaaSアプリやAIのプロンプトを高度に分岐・自動連携させるワークフロー自動化ツール。(無料枠あり)"
+  },
+  {
+    "category": "自動化・ワークフロー・翻訳",
+    "name": "DeepL",
+    "url": "https://www.deepl.com/",
+    "desc": "文脈を正確に読み取り、業界用語やニュアンスを完全に再現する世界最高峰の超高精度翻訳AI。(無料)"
+  },
+  {
+    "category": "AI作成・カスタマイズ",
+    "name": "Dify",
+    "url": "https://dify.ai/",
+    "desc": "ノーコードで自分専用の高度なAIアプリや、独自のデータベース（RAG）を組み込んだチャットボットを爆速で作れる最強ツール。(無料)"
+  },
+  {
+    "category": "AI作成・カスタマイズ",
+    "name": "Coze",
+    "url": "https://www.coze.com/",
+    "desc": "LINE、Discord、WEBサイトと連携できるAIボットを視覚的なフローで簡単に作成可能。(無料)"
+  },
+  {
+    "category": "AI作成・カスタマイズ",
+    "name": "Flowise",
+    "url": "https://flowiseai.com/",
+    "desc": "【新規追加】ドラッグ＆ドロップのノード接続方式で、 LangChainをベースにした独自の高度なAIエージェントや業務自動化システムを構築できるオープンソースAI。(無料)"
+  },
+  {
+    "category": "AI作成・カスタマイズ",
+    "name": "GPTs (OpenAI)",
+    "url": "https://chatgpt.com/",
+    "desc": "チャットで指示を出すだけで、特定の業務やプロンプトに特化した独自のChatGPTを作れる機能。(有料)"
+  },
+  {
+    "category": "リサーチ・情報検索",
+    "name": "Perplexity",
+    "url": "https://www.perplexity.ai/",
+    "desc": "ネット上の最新情報をリアルタイムで調べて、信頼できる根拠URL付きで構造化された回答を出す検索の主役。(無料枠あり)"
+  },
+  {
+    "category": "リサーチ・情報検索",
+    "name": "Phind",
+    "url": "https://www.phind.com/",
+    "desc": "プログラミングや最新の技術リサーチに特化し、バグの解決策やコード例を高精度で即答する開発者向け検索AI。(無料)"
+  },
+  {
+    "category": "リサーチ・情報検索",
+    "name": "Felo",
+    "url": "https://felo.ai/",
+    "desc": "海外の英語・スペイン語サイトの情報も自動でリサーチし、日本語で完璧に構造化してまとめてくれるクロスリンガル検索。(無料)"
+  },
+  {
+    "category": "リサーチ・情報検索",
+    "name": "Genspark",
+    "url": "https://www.genspark.ai/",
+    "desc": "調べたいテーマについて複数のサイトを並列リサーチし、自分専用のまとめページを自動作成。(無料)"
+  }
+]
