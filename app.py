@@ -65,7 +65,7 @@ def save_chat_log(user_message, ai_message):
 # ==========================================
 st.set_page_config(page_title="Quieres AI", page_icon="🤖", layout="centered")
 
-st.title("💡 Quieres AI")
+st.title("Quieres AI")
 st.write("あなたに最適なAIツールを瞬時に提案するコンシェルジュです。")
 
 # チャット履歴の保持（Streamlitのセッション状態）
