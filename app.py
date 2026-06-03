@@ -13,7 +13,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- 🎨 限界突破：外資系ハイエンドSaaS風 グラスモルフィズムCSS ---
+# --- 🎨 究極の洗練：Gemini風垂直ストリームCSS ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -50,8 +50,8 @@ st.markdown("""
         color: #ffffff !important;
         font-size: 1.1rem;
         font-weight: 400;
-        letter-spacing: -0.02em;
-        opacity: 0.8;
+        letter-spacing: 0.05em;
+        opacity: 0.7;
         margin-bottom: 3.5rem;
     }
     
@@ -65,7 +65,7 @@ st.markdown("""
         display: none !important;
     }
     
-    /* 6. メッセージ入力コンテナ：極細の美ボーダーとスマートフォーカス */
+    /* 6. メッセージ入力コンテナ */
     .stChatInputContainer {
         border-radius: 14px !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -77,7 +77,6 @@ st.markdown("""
     }
     .stChatInputContainer:focus-within {
         border-color: rgba(56, 189, 248, 0.5) !important;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.15), 0 10px 40px rgba(0, 0, 0, 0.4);
     }
     .stChatInputContainer textarea {
         color: #ffffff !important;
@@ -91,7 +90,7 @@ st.markdown("""
         color: #38bdf8 !important;
     }
     
-    /* 7. チャットボックス：洗練された薄ガラスのコンテナデザイン */
+    /* 7. チャットボックス：薄ガラスのコンテナデザイン */
     [data-testid="stChatMessage"] {
         background-color: rgba(255, 255, 255, 0.02) !important;
         backdrop-filter: blur(16px) !important;
@@ -102,7 +101,7 @@ st.markdown("""
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     }
     
-    /* 8. テキスト表示の完全ホワイトアウト（漏れなくすべて純白に） */
+    /* 8. テキスト表示の完全ホワイトアウトとマークダウンの正常化 */
     [data-testid="stChatMessage"] p, 
     [data-testid="stChatMessage"] li, 
     [data-testid="stChatMessage"] ol, 
@@ -113,8 +112,15 @@ st.markdown("""
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
         font-size: 0.98rem !important;
-        line-height: 1.75 !important;
-        letter-spacing: -0.01em !important;
+        line-height: 1.8 !important;
+        letter-spacing: -0.005em !important;
+    }
+    
+    /* 箇条書きのリストインデント幅を美しく確保 */
+    [data-testid="stChatMessage"] ul, [data-testid="stChatMessage"] ol {
+        padding-left: 1.5rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
     }
     
     /* ハイパーリンク設定 */
@@ -140,39 +146,35 @@ st.markdown("""
         display: none !important;
     }
     
-    /* 10. 🛠️ 【位置ずれ修正】自作エンブレム構造を「中央・垂直揃え」に最適化 */
-    .custom-avatar-wrapper {
+    /* 10. 🛠️ Gemini風ヘッダーレイアウト（丸と名前を上に配置） */
+    .gemini-header {
         display: flex;
-        align-items: center; /* 🛠️ flex-startからcenterへ変更し、最初の1行目の中心と完全同期 */
-        gap: 1.2rem;
-        width: 100%;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 1rem; /* テキストとの間に洗練された余白を確保 */
     }
     
-    /* AIコンシェルジュ：高貴なネオン紫グラデーション */
     .avatar-ai {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
-        box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
-        flex-shrink: 0;
+        box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
     }
     
-    /* ユーザー：洗練されたネオン青グラデーション */
     .avatar-user {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
-        flex-shrink: 0;
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
     }
     
-    .chat-content-area {
-        flex-grow: 1;
-        width: 100%;
-        display: flex;
-        align-items: center; /* 🛠️ テキスト側コンテナの高さも揃える */
+    .brand-name {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.01em !important;
+        opacity: 0.9;
     }
     
     /* ミニマルなローディングプログレスバー */
@@ -241,34 +243,38 @@ if "click_target_name" in query_params and "click_target_url" in query_params:
 
 # --- タイトル表示 ---
 st.markdown("<div class='main-title'>¿Quieres AI?</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub-title'>世界中のあらゆるAIからあなたに最適なツールを即答します。</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub-title'>目的を、最速で現実に。世界中のAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
 st.divider()
 
-# --- 💬 自作エンブレム表示 ---
+# --- 💬 Gemini風：垂直フロースリーム表示 ---
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "今日はどんな作業をしますか？"}]
 
 for message in st.session_state.messages:
     is_ai = (message["role"] == "assistant")
     avatar_class = "avatar-ai" if is_ai else "avatar-user"
+    display_name = "¿Quieres AI?" if is_ai else "You"
     
     with st.chat_message(message["role"]):
+        # 上部に丸アイコンと名前、下部に100%幅の横書き文章
         st.markdown(f"""
-        <div class="custom-avatar-wrapper">
+        <div class="gemini-header">
             <div class="{avatar_class}"></div>
-            <div class="chat-content-area">{message["content"]}</div>
+            <div class="brand-name">{display_name}</div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown(message["content"])
 
 # --- 入力・応答処理 ---
 if user_input := st.chat_input("ここにメッセージを入力..."):
     with st.chat_message("user"):
         st.markdown(f"""
-        <div class="custom-avatar-wrapper">
+        <div class="gemini-header">
             <div class="avatar-user"></div>
-            <div class="chat-content-area">{user_input}</div>
+            <div class="brand-name">You</div>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
     
     with st.chat_message("assistant"):
@@ -279,12 +285,7 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
             
             if not api_key:
                 response = "⚠️ OpenAI API Keyが設定されていません。"
-                message_placeholder.markdown(f"""
-                <div class="custom-avatar-wrapper">
-                    <div class="avatar-ai"></div>
-                    <div class="chat-content-area">{response}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                message_placeholder.markdown(response)
             else:
                 try:
                     client = OpenAI(api_key=api_key)
@@ -297,20 +298,17 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
                     completion = client.chat.completions.create(model="gpt-4o-mini", messages=api_messages)
                     response = completion.choices[0].message.content
                     
-                    message_placeholder.markdown(f"""
-                    <div class="custom-avatar-wrapper">
+                    # 最初の表示時にもヘッダーを付与
+                    st.markdown(f"""
+                    <div class="gemini-header">
                         <div class="avatar-ai"></div>
-                        <div class="chat-content-area">{response}</div>
+                        <div class="brand-name">¿Quieres AI?</div>
                     </div>
                     """, unsafe_allow_html=True)
+                    message_placeholder.markdown(response)
                     save_chat_log(user_input, response, "jp")
                 except Exception as e:
                     response = f"エラーが発生しました: {str(e)}"
-                    message_placeholder.markdown(f"""
-                    <div class="custom-avatar-wrapper">
-                        <div class="avatar-ai"></div>
-                        <div class="chat-content-area">{response}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    message_placeholder.markdown(response)
                 
     st.session_state.messages.append({"role": "assistant", "content": response})
