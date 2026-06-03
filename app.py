@@ -207,7 +207,7 @@ st.markdown("<div class='sub-title'>何がしたいか入力してね！世界�
 st.divider()
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "¡Hola! 今日はどんな作業やリサーチをしますか？"}]
+    st.session_state.messages = [{"role": "assistant", "content": "今日はどんな作業をしますか？"}]
 
 for message in st.session_state.messages:
     avatar_icon = "🧩" if message["role"] == "assistant" else "✨"
@@ -222,35 +222,33 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
     with st.chat_message("assistant", avatar="🧩"):
         message_placeholder = st.empty()
         
-        progress_text = "AIコンシェルジュが思考中..."
-        progress_bar = st.progress(40, text=progress_text)
-        
-        for percent_complete in range(40, 101, 5):
-            time.sleep(0.05)
-            progress_bar.progress(percent_complete, text=progress_text)
+        # 🛠️ 固定タイマーを廃止し、AIの生成中（通信中）だけ的確に回り続けるローディングバー
+        with st.spinner("AIコンシェルジュが思考中..."):
             
-        progress_bar.empty()
-        
-        api_key = st.secrets.get("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY")
-        
-        if not api_key:
-            response = "⚠️ OpenAI API Keyが設定されていません。"
-            message_placeholder.markdown(response)
-        else:
-            try:
-                client = OpenAI(api_key=api_key)
-                system_prompt = f"You are 'Kieres AI', a brilliant AI tools concierge. You have a master database of AI tools in JSON format:\n{AI_MASTER_TEXT}\n\nInstructions:\n1. Respond completely in the user's language.\n2. Intelligently select and recommend tools with their detailed free/paid tiers and usage guides written in the database.\n3. CRITICAL: Format tool links as: [Tool Name](/?click_target_name=ToolName&click_target_url=OriginalURL)\n4. Present options beautifully with bullet points. Ensure the response text is extremely clean."
-                
-                api_messages = [{"role": "system", "content": system_prompt}]
-                for m in st.session_state.messages[-6:]:
-                    api_messages.append({"role": "assistant" if m["role"] == "assistant" else "user", "content": m["content"]})
-                
-                completion = client.chat.completions.create(model="gpt-4o-mini", messages=api_messages)
-                response = completion.choices[0].message.content
+            api_key = st.secrets.get("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY")
+            
+            if not api_key:
+                response = "⚠️ OpenAI API Keyが設定されていません。"
                 message_placeholder.markdown(response)
-                save_chat_log(user_input, response, "jp")
-            except Exception as e:
-                response = f"エラーが発生しました: {str(e)}"
-                message_placeholder.markdown(response)
+            else:
+                try:
+                    client = OpenAI(api_key=api_key)
+                    system_prompt = f"You are 'Kieres AI', a brilliant AI tools concierge. You have a master database of AI tools in JSON format:\n{AI_MASTER_TEXT}\n\nInstructions:\n1. Respond completely in the user's language.\n2. Intelligently select and recommend tools with their detailed free/paid tiers and usage guides written in the database.\n3. CRITICAL: Format tool links as: [Tool Name](/?click_target_name=ToolName&click_target_url=OriginalURL)\n4. Present options beautifully with bullet points. Ensure the response text is extremely clean."
+                    
+                    api_messages = [{"role": "system", "content": system_prompt}]
+                    for m in st.session_state.messages[-6:]:
+                        api_messages.append({"role": "assistant" if m["role"] == "assistant" else "user", "content": m["content"]})
+                    
+                    # ここでOpenAIと通信している間、スピナー（バー）が的確に波打ち続けます
+                    completion = client.chat.completions.create(model="gpt-4o-mini", messages=api_messages)
+                    response = completion.choices[0].message.content
+                    
+                    # 生成が完了した瞬間に、自動でローディングが消えて回答が表示されます
+                    message_placeholder.markdown(response)
+                    save_chat_log(user_input, response, "jp")
+                    
+                except Exception as e:
+                    response = f"エラーが発生しました: {str(e)}"
+                    message_placeholder.markdown(response)
                 
     st.session_state.messages.append({"role": "assistant", "content": response})
