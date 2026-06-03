@@ -246,7 +246,7 @@ st.divider()
 
 # --- 💬 自作エンブレム表示 ---
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "¡Hola! 今日はどんな作業やリサーチをしますか？"}]
+    st.session_state.messages = [{"role": "assistant", "content": "お疲れ様です。今日はどんな作業をしますか？"}]
 
 for message in st.session_state.messages:
     is_ai = (message["role"] == "assistant")
