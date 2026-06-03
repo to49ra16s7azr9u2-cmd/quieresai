@@ -4,10 +4,9 @@ FROM python:3.11-slim
 # 2. コンテナ内の作業ディレクトリを設定
 WORKDIR /app
 
-# 3. コンテナの動作に必要なシステムツール（SQLite等）をインストール
+# 3. コンテナの動作に必要なシステムツールをインストール（不要なものを削除済！）
 RUN apt-get update && apt-get install -y \
     build-essential \
-    software-properties-common \
     git \
     sqlite3 \
     && rm -rf /var/lib/apt/lists/*
@@ -16,7 +15,6 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 
 # 5. 必要なPythonライブラリを一括インストール
-# ※ requirements.txt があればそれを、なければ主要ライブラリをここで直接インストールします
 RUN pip install --no-cache-dir streamlit openai gspread google-auth
 
 # 6. Streamlitが使用するポート番号（8080）を開放
@@ -28,4 +26,3 @@ ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
 
 # 8. アプリの起動コマンド
 CMD ["streamlit", "run", "app.py"]
-
