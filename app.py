@@ -1,8 +1,9 @@
-import streamlit as st
+import streamlit st
 import sqlite3
 import datetime
 import os
 import json
+import time
 from openai import OpenAI
 
 # --- ページ全体の基本設定 ---
@@ -12,16 +13,16 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- 🎨 視覚的統一：Mi Quincena風・極限カスタムCSS ---
+# --- 🎨 視覚的完全統一：全文字ホワイト化カスタムCSS ---
 st.markdown("""
 <style>
-    /* 1. 全体の背景と基本文字色の統一 */
+    /* 1. 全体の背景と基本文字色の統一（最優先ホワイト） */
     .stApp {
         background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
         color: #ffffff !important;
     }
     
-    /* 2. メインタイトルのグラデーション */
+    /* 2. メインタイトルのグラデーション（ここだけロゴ装飾） */
     .main-title {
         font-size: 3rem !important;
         font-weight: 800 !important;
@@ -32,15 +33,15 @@ st.markdown("""
         margin-bottom: 0.5rem;
     }
     
-    /* 3. サブタイトルの明瞭化 */
+    /* 3. サブタイトルのホワイト化 */
     .sub-title {
         text-align: center;
-        color: #e2e8f0 !important;
+        color: #ffffff !important;
         font-size: 1.1rem;
         margin-bottom: 2rem;
     }
     
-    /* 4. 【重要】入力欄の周囲の白い背景・余白を完全にダーク化 */
+    /* 4. 入力欄の周囲の白い背景・余白を完全にダーク化 */
     [data-testid="stChatInputBottomBlankArea"] {
         background: transparent !important;
         background-color: transparent !important;
@@ -49,7 +50,7 @@ st.markdown("""
         background: transparent !important;
     }
     
-    /* 5. メッセージ入力コンテナ自体のダークネオン化 */
+    /* 5. メッセージ入力コンテナのホワイト＆ダークネオン化 */
     .stChatInputContainer {
         border-radius: 15px !important;
         border: 1px solid #3b82f6 !important;
@@ -60,30 +61,55 @@ st.markdown("""
         color: #ffffff !important;
     }
     .stChatInputContainer textarea::placeholder {
-        color: #94a3b8 !important;
+        color: #ffffff !important; /* プレースホルダーの文字も白に統一 */
+        opacity: 0.7;
     }
     
-    /* 6. 送信ボタン（飛行機マーク）のネオンホワイト化 */
+    /* 6. 送信ボタン（飛行機マーク）のカラー */
     .stChatInputContainer button {
         color: #38bdf8 !important;
     }
     
-    /* 7. チャットボックスの統一デザイン（境界線を滑らかに） */
+    /* 7. 【超重要】チャットボックス内部のあらゆるテキスト・マークダウンを漏れなく白にする */
     [data-testid="stChatMessage"] {
-        color: #ffffff !important;
         background-color: rgba(30, 41, 59, 0.6) !important;
         border-radius: 12px;
         border: 1px solid rgba(51, 65, 85, 0.8);
         padding: 1rem;
         margin-bottom: 1rem;
     }
-    [data-testid="stChatMessage"] p, [data-testid="stChatMessage"] li, [data-testid="stChatMessage"] a {
+    
+    /* AIの出力文、通常の段落、箇条書き、番号付きリスト、太字、リンクすべてを白に強制固定 */
+    [data-testid="stChatMessage"] p, 
+    [data-testid="stChatMessage"] li, 
+    [data-testid="stChatMessage"] ol, 
+    [data-testid="stChatMessage"] ul, 
+    [data-testid="stChatMessage"] span, 
+    [data-testid="stChatMessage"] strong, 
+    [data-testid="stChatMessage"] a {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }
+    
+    /* リンクの下線や装飾も白ベースに調整 */
+    [data-testid="stChatMessage"] a {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+    
+    /* ローディングテキストのホワイト化 */
+    div[data-testid="stProgress"] > div {
         color: #ffffff !important;
     }
     
-    /* 8. 区切り線のカラー変更 */
+    /* 8. 区切り線のカラー */
     hr {
         border-color: #334155 !important;
+    }
+    
+    /* ローディングバーのネオンカスタム */
+    div[data-testid="stProgress"] > div > div > div > div {
+        background-color: #38bdf8 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -140,25 +166,31 @@ st.markdown("<div class='main-title'>¿Quieres AI?</div>", unsafe_allow_html=Tru
 st.markdown("<div class='sub-title'>何がしたいか入力してね！世界中のあらゆるAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
 st.divider()
 
-# --- 💬 会話履歴の保持 ＆ アイコンの完全統一（🧩 と ✨） ---
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "今日はどんな作業をしますか？"}]
+    st.session_state.messages = [{"role": "assistant", "content": "¡Hola! 今日はどんな作業やリサーチをしますか？"}]
 
 for message in st.session_state.messages:
-    # ロール（発言者）に応じてアイコンを動的に完全上書き
     avatar_icon = "🧩" if message["role"] == "assistant" else "✨"
     with st.chat_message(message["role"], avatar=avatar_icon):
         st.markdown(message["content"])
 
 if user_input := st.chat_input("ここにメッセージを入力..."):
-    # ユーザー発言（✨アイコン）
     with st.chat_message("user", avatar="✨"):
         st.markdown(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
     
-    # アシスタント発言（🧩アイコン）
     with st.chat_message("assistant", avatar="🧩"):
         message_placeholder = st.empty()
+        
+        progress_text = "AIコンシェルジュが思考中..."
+        progress_bar = st.progress(40, text=progress_text)
+        
+        for percent_complete in range(40, 101, 5):
+            time.sleep(0.05)
+            progress_bar.progress(percent_complete, text=progress_text)
+            
+        progress_bar.empty()
+        
         api_key = st.secrets.get("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY")
         
         if not api_key:
@@ -167,7 +199,7 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
         else:
             try:
                 client = OpenAI(api_key=api_key)
-                system_prompt = f"You are 'Kieres AI', a brilliant AI tools concierge. You have a master database of AI tools in JSON format:\n{AI_MASTER_TEXT}\n\nInstructions:\n1. Respond completely in the user's language.\n2. Intelligently select and recommend tools.\n3. CRITICAL: Format tool links as: [Tool Name](/?click_target_name=ToolName&click_target_url=OriginalURL)\n4. Present options beautifully with bullet points."
+                system_prompt = f"You are 'Kieres AI', a brilliant AI tools concierge. You have a master database of AI tools in JSON format:\n{AI_MASTER_TEXT}\n\nInstructions:\n1. Respond completely in the user's language.\n2. Intelligently select and recommend tools with their detailed free/paid tiers and usage guides written in the database.\n3. CRITICAL: Format tool links as: [Tool Name](/?click_target_name=ToolName&click_target_url=OriginalURL)\n4. Present options beautifully with bullet points. Ensure the response text is extremely clean."
                 
                 api_messages = [{"role": "system", "content": system_prompt}]
                 for m in st.session_state.messages[-6:]:
