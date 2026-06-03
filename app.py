@@ -13,135 +13,143 @@ st.set_page_config(
     layout="centered"
 )
 
-# --- 🎨 究極の洗練：外資系AIテック風 グラスモルフィズムCSS ---
+# --- 🎨 限界突破：外資系ハイエンドSaaS風 グラスモルフィズムCSS ---
 st.markdown("""
 <style>
-    /* 1. グローバルフォント＆バックグラウンドのモダン化 */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
+    /* 1. 全体のベース（背景・最高峰のフォントシステム） */
     .stApp {
-        background: linear-gradient(135deg, #090d16 0%, #110f24 100%);
+        background: linear-gradient(135deg, #060814 0%, #0b0b1e 50%, #15112a 100%);
         color: #ffffff !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
     
-    /* 2. メインタイトル：極細かつ大胆なハイエンドグラデーション */
+    /* 2. 【最重要】もっさり感を消すため、メインコンテンツの横幅を拡張・最適化 */
+    [data-testid="stMainBlockContainer"] {
+        max-width: 900px !important;
+        padding-top: 4rem !important;
+        padding-bottom: 6rem !important;
+    }
+    
+    /* 3. メインタイトル：圧倒的モダンなタイポグラフィ */
     .main-title {
-        font-size: 3.2rem !important;
+        font-size: 3.6rem !important;
         font-weight: 800 !important;
         text-align: center;
-        letter-spacing: -0.05em !important;
+        letter-spacing: -0.06em !important;
         background: linear-gradient(90deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.4rem;
     }
     
-    /* 3. サブタイトル：タイポグラフィの美しさを際立たせる */
+    /* 4. サブタイトル：繊細なホワイトウエイト */
     .sub-title {
         text-align: center;
-        color: #ffffff !important;
-        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.7) !important;
+        font-size: 1.1rem;
         font-weight: 400;
-        letter-spacing: -0.01em;
-        opacity: 0.8;
-        margin-bottom: 2.5rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 3.5rem;
     }
     
-    /* 4. 入力エリア周囲の完全ステルス化（余白のホワイトアウトを絶対防御） */
+    /* 5. 入力エリア周囲の完全ステルス化（余白の無駄な浮きを排除） */
     [data-testid="stChatInputBottomBlankArea"] {
         background: transparent !important;
         background-color: transparent !important;
     }
     footer, [data-testid="stFooterBlock"] {
         background: transparent !important;
+        display: none !important;
     }
     
-    /* 5. メッセージ入力コンテナ：枠線を細くし、シームレスに背景へ溶け込ませる */
+    /* 6. メッセージ入力コンテナ：極細の美ボーダーとスマートフォーカス */
     .stChatInputContainer {
-        border-radius: 12px !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        background-color: rgba(15, 23, 42, 0.6) !important;
-        backdrop-filter: blur(12px) !important;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        transition: border-color 0.3s ease;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        background-color: rgba(13, 18, 36, 0.8) !important;
+        backdrop-filter: blur(20px) !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        padding: 0.2rem !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .stChatInputContainer:focus-within {
-        border-color: rgba(56, 189, 248, 0.8) !important;
+        border-color: rgba(56, 189, 248, 0.5) !important;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.15), 0 10px 40px rgba(0, 0, 0, 0.4);
     }
     .stChatInputContainer textarea {
         color: #ffffff !important;
-        font-size: 0.95rem !important;
+        font-size: 0.98rem !important;
     }
     .stChatInputContainer textarea::placeholder {
-        color: #ffffff !important;
-        opacity: 0.4;
+        color: rgba(255, 255, 255, 0.3) !important;
     }
     .stChatInputContainer button {
         color: #38bdf8 !important;
     }
     
-    /* 6. チャットメッセージ：グラスモルフィズム（半透明ガラス）デザイン */
+    /* 7. 【劇的進化】チャットボックス：洗練された薄ガラスのコンテナデザイン */
     [data-testid="stChatMessage"] {
-        background-color: rgba(255, 255, 255, 0.03) !important;
-        backdrop-filter: blur(8px) !important;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        padding: 1.2rem;
-        margin-bottom: 1.2rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        background-color: rgba(255, 255, 255, 0.02) !important;
+        backdrop-filter: blur(16px) !important;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
     }
     
-    /* 7. マークダウンテキストの完全ホワイトアウト＆行間最適化 */
+    /* 8. テキスト表示の完全統一（パキッとしたホワイトと美しい行間） */
     [data-testid="stChatMessage"] p, 
     [data-testid="stChatMessage"] li, 
     [data-testid="stChatMessage"] ol, 
     [data-testid="stChatMessage"] ul, 
     [data-testid="stChatMessage"] span, 
-    [data-testid="stChatMessage"] strong, 
-    [data-testid="stChatMessage"] a {
+    [data-testid="stChatMessage"] strong {
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
-        font-size: 0.95rem !important;
-        line-height: 1.65 !important;
-        letter-spacing: -0.005em !important;
+        font-size: 0.98rem !important;
+        line-height: 1.75 !important;
+        letter-spacing: -0.01em !important;
     }
     
-    /* テック系特有の洗練されたハイパーリンク（下線を消し、ホバーで光らせる） */
+    /* テック系特有の洗練されたスマートリンク（下線を消し、ホバーで滑らかに変色） */
     [data-testid="stChatMessage"] a {
-        text-decoration: none !important;
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
+        text-decoration: none !important;
         font-weight: 600 !important;
-        border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+        border-bottom: 1px solid rgba(56, 189, 248, 0.2);
         transition: all 0.2s ease;
     }
     [data-testid="stChatMessage"] a:hover {
-        color: #818cf8 !important;
-        -webkit-text-fill-color: #818cf8 !important;
-        border-bottom-color: #818cf8 !important;
+        color: #c084fc !important;
+        -webkit-text-fill-color: #c084fc !important;
+        border-bottom-color: rgba(192, 132, 252, 0.6);
     }
     
-    /* 8. アバターアイコン（絵文字）のサイズと余白の微調整 */
+    /* 9. アバターアイコンのスマート枠線化 */
     [data-testid="stChatMessageAvatar"] {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        background-color: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
     }
     
-    /* ローディングテキスト＆バーのミニマル化 */
+    /* ミニマルなローディングプログレスバー */
     div[data-testid="stProgress"] > div {
-        color: #ffffff !important;
-        font-size: 0.85rem !important;
-        opacity: 0.7;
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-size: 0.9rem !important;
     }
     div[data-testid="stProgress"] > div > div > div > div {
-        background-gradient: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%) !important;
-        background-color: #38bdf8 !important;
-        height: 4px !important;
+        background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%) !important;
+        height: 3px !important;
     }
     
     hr {
-        border-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.06) !important;
+        margin: 2.5rem 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
