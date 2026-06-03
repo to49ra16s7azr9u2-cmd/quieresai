@@ -9,24 +9,23 @@ from openai import OpenAI
 # --- ページ全体の基本設定 ---
 st.set_page_config(
     page_title="キエレスAI (¿Quieres AI?)",
-    # 🧩の代わりに、ミ・キンセナ風のネオンブルー＆パープルの美しいグラデーションSVG画像をファビコンに指定
     page_icon="https://pub-c5e31b5cdafb419a86a69d5d343ea9cc.r2.dev/kieres_favicon.svg",
     layout="centered"
 )
 
-# --- 🎨 極限のディテール：外資系テック・ネオンエンブレムCSS ---
+# --- 🎨 限界突破：外資系ハイエンドSaaS風 グラスモルフィズムCSS ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
-    /* 1. グローバルフォント＆漆黒グラデーション */
+    /* 1. 全体のベース（背景・最高峰のフォントシステム） */
     .stApp {
-        background: linear-gradient(135deg, #040612 0%, #0a0a1a 50%, #120e24 100%);
+        background: linear-gradient(135deg, #060814 0%, #0b0b1e 50%, #15112a 100%);
         color: #ffffff !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
     
-    /* 2. メインコンテンツの横幅拡張（もっさり感の排除） */
+    /* 2. メインコンテンツの横幅拡張・最適化 */
     [data-testid="stMainBlockContainer"] {
         max-width: 900px !important;
         padding-top: 4rem !important;
@@ -48,10 +47,11 @@ st.markdown("""
     /* 4. サブタイトル */
     .sub-title {
         text-align: center;
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: #ffffff !important;
         font-size: 1.1rem;
         font-weight: 400;
         letter-spacing: -0.02em;
+        opacity: 0.8;
         margin-bottom: 3.5rem;
     }
     
@@ -84,7 +84,8 @@ st.markdown("""
         font-size: 0.98rem !important;
     }
     .stChatInputContainer textarea::placeholder {
-        color: rgba(255, 255, 255, 0.3) !important;
+        color: #ffffff !important;
+        opacity: 0.4;
     }
     .stChatInputContainer button {
         color: #38bdf8 !important;
@@ -101,19 +102,22 @@ st.markdown("""
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     }
     
-    /* 8. テキスト表示の完全ホワイトアウト＆ハイパーリンク */
+    /* 8. 【超重要】テキスト表示の完全ホワイトアウト（漏れなくすべて純白に） */
     [data-testid="stChatMessage"] p, 
     [data-testid="stChatMessage"] li, 
     [data-testid="stChatMessage"] ol, 
     [data-testid="stChatMessage"] ul, 
     [data-testid="stChatMessage"] span, 
-    [data-testid="stChatMessage"] strong {
+    [data-testid="stChatMessage"] strong,
+    div[data-testid="stChatMessage"] * {
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
         font-size: 0.98rem !important;
         line-height: 1.75 !important;
         letter-spacing: -0.01em !important;
     }
+    
+    /* ハイパーリンクのみ外資系テックブルーで差別化 */
     [data-testid="stChatMessage"] a {
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
@@ -128,48 +132,52 @@ st.markdown("""
         border-bottom-color: rgba(192, 132, 252, 0.6);
     }
     
-    /* 9. 【超重要】Streamlit標準アバターを非表示にし、独自ネオンエンブレムを強制適用 */
+    /* 9. 【解決】Streamlitの標準アイコンボックスを完全に非表示（オレンジと赤の四角を消去） */
     [data-testid="stChatMessageAvatar"] {
         display: none !important;
     }
+    div[data-testid="stChatMessage"] > div:first-child {
+        display: none !important;
+    }
     
-    /* 10. 🎨 【Mi Quincena風】自作エンブレムのインフラ設計 */
+    /* 10. 自作エンブレム構造の最適化 */
     .custom-avatar-wrapper {
         display: flex;
         align-items: flex-start;
         gap: 1.2rem;
+        width: 100%;
     }
     
-    /* AIコンシェルジュ：ネオンシームレスグラデーション */
+    /* AIコンシェルジュ：高貴なネオン紫グラデーション */
     .avatar-ai {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-        box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
         flex-shrink: 0;
         margin-top: 0.2rem;
     }
     
-    /* ユーザー：モダン・スモークガラス */
+    /* ユーザー：洗練されたネオン青グラデーション */
     .avatar-user {
         width: 32px;
         height: 32px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
         flex-shrink: 0;
         margin-top: 0.2rem;
     }
     
     .chat-content-area {
         flex-grow: 1;
+        width: 100%;
     }
     
     /* ミニマルなローディングプログレスバー */
     div[data-testid="stProgress"] > div {
-        color: rgba(255, 255, 255, 0.8) !important;
+        color: #ffffff !important;
         font-size: 0.9rem !important;
     }
     div[data-testid="stProgress"] > div > div > div > div {
@@ -236,7 +244,7 @@ st.markdown("<div class='main-title'>¿Quieres AI?</div>", unsafe_allow_html=Tru
 st.markdown("<div class='sub-title'>何がしたいか入力してね！世界中のあらゆるAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
 st.divider()
 
-# --- 💬 自作エンブレムをチャットHTMLに直接インジェクションして表示 ---
+# --- 💬 自作エンブレム表示 ---
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "¡Hola! 今日はどんな作業やリサーチをしますか？"}]
 
@@ -254,7 +262,6 @@ for message in st.session_state.messages:
 
 # --- 入力・応答処理 ---
 if user_input := st.chat_input("ここにメッセージを入力..."):
-    # ユーザー発言のインジェクション表示
     with st.chat_message("user"):
         st.markdown(f"""
         <div class="custom-avatar-wrapper">
@@ -290,7 +297,6 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
                     completion = client.chat.completions.create(model="gpt-4o-mini", messages=api_messages)
                     response = completion.choices[0].message.content
                     
-                    # アシスタント回答のインジェクション表示
                     message_placeholder.markdown(f"""
                     <div class="custom-avatar-wrapper">
                         <div class="avatar-ai"></div>
