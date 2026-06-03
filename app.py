@@ -102,7 +102,7 @@ st.markdown("""
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     }
     
-    /* 8. 【超重要】テキスト表示の完全ホワイトアウト（漏れなくすべて純白に） */
+    /* 8. テキスト表示の完全ホワイトアウト（漏れなくすべて純白に） */
     [data-testid="stChatMessage"] p, 
     [data-testid="stChatMessage"] li, 
     [data-testid="stChatMessage"] ol, 
@@ -117,7 +117,7 @@ st.markdown("""
         letter-spacing: -0.01em !important;
     }
     
-    /* ハイパーリンクのみ外資系テックブルーで差別化 */
+    /* ハイパーリンク設定 */
     [data-testid="stChatMessage"] a {
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
@@ -132,7 +132,7 @@ st.markdown("""
         border-bottom-color: rgba(192, 132, 252, 0.6);
     }
     
-    /* 9. 【解決】Streamlitの標準アイコンボックスを完全に非表示（オレンジと赤の四角を消去） */
+    /* 9. Streamlitの標準アイコンボックスを完全に非表示 */
     [data-testid="stChatMessageAvatar"] {
         display: none !important;
     }
@@ -140,10 +140,10 @@ st.markdown("""
         display: none !important;
     }
     
-    /* 10. 自作エンブレム構造の最適化 */
+    /* 10. 🛠️ 【位置ずれ修正】自作エンブレム構造を「中央・垂直揃え」に最適化 */
     .custom-avatar-wrapper {
         display: flex;
-        align-items: flex-start;
+        align-items: center; /* 🛠️ flex-startからcenterへ変更し、最初の1行目の中心と完全同期 */
         gap: 1.2rem;
         width: 100%;
     }
@@ -156,7 +156,6 @@ st.markdown("""
         background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
         box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
         flex-shrink: 0;
-        margin-top: 0.2rem;
     }
     
     /* ユーザー：洗練されたネオン青グラデーション */
@@ -167,12 +166,13 @@ st.markdown("""
         background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
         box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
         flex-shrink: 0;
-        margin-top: 0.2rem;
     }
     
     .chat-content-area {
         flex-grow: 1;
         width: 100%;
+        display: flex;
+        align-items: center; /* 🛠️ テキスト側コンテナの高さも揃える */
     }
     
     /* ミニマルなローディングプログレスバー */
