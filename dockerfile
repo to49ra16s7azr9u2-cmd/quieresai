@@ -17,7 +17,7 @@ COPY . .
 
 # 5. 必要なPythonライブラリを一括インストール
 # ※ requirements.txt があればそれを、なければ主要ライブラリをここで直接インストールします
-RUN pip install --no-cache-dir streamlit openai
+RUN pip install --no-cache-dir streamlit openai gspread google-auth
 
 # 6. Streamlitが使用するポート番号（8080）を開放
 EXPOSE 8080
