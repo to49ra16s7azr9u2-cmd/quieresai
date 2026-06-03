@@ -1,10 +1,11 @@
 import streamlit as st
-import sqlite3
 import datetime
 import os
 import json
 import time
 from openai import OpenAI
+import gspread
+from google.oauth2.service_account import Credentials
 
 # --- ページ全体の基本設定 ---
 st.set_page_config(
@@ -18,21 +19,18 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
     
-    /* 1. 全体のベース（背景・最高峰のフォントシステム） */
     .stApp {
         background: linear-gradient(135deg, #060814 0%, #0b0b1e 50%, #15112a 100%);
         color: #ffffff !important;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
     
-    /* 2. メインコンテンツの横幅拡張・最適化 */
     [data-testid="stMainBlockContainer"] {
         max-width: 900px !important;
         padding-top: 4rem !important;
         padding-bottom: 6rem !important;
     }
     
-    /* 3. メインタイトル */
     .main-title {
         font-size: 3.6rem !important;
         font-weight: 800 !important;
@@ -44,7 +42,6 @@ st.markdown("""
         margin-bottom: 0.4rem;
     }
     
-    /* 4. サブタイトル */
     .sub-title {
         text-align: center;
         color: #ffffff !important;
@@ -55,17 +52,9 @@ st.markdown("""
         margin-bottom: 3.5rem;
     }
     
-    /* 5. 入力エリア周囲の完全ステルス化 */
-    [data-testid="stChatInputBottomBlankArea"] {
-        background: transparent !important;
-        background-color: transparent !important;
-    }
-    footer, [data-testid="stFooterBlock"] {
-        background: transparent !important;
-        display: none !important;
-    }
+    [data-testid="stChatInputBottomBlankArea"] { background: transparent !important; }
+    footer, [data-testid="stFooterBlock"] { display: none !important; }
     
-    /* 6. メッセージ入力コンテナ */
     .stChatInputContainer {
         border-radius: 14px !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -73,24 +62,11 @@ st.markdown("""
         backdrop-filter: blur(20px) !important;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         padding: 0.2rem !important;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .stChatInputContainer:focus-within {
-        border-color: rgba(56, 189, 248, 0.5) !important;
-    }
-    .stChatInputContainer textarea {
-        color: #ffffff !important;
-        font-size: 0.98rem !important;
-    }
-    .stChatInputContainer textarea::placeholder {
-        color: #ffffff !important;
-        opacity: 0.4;
-    }
-    .stChatInputContainer button {
-        color: #38bdf8 !important;
-    }
+    .stChatInputContainer:focus-within { border-color: rgba(56, 189, 248, 0.5) !important; }
+    .stChatInputContainer textarea, .stChatInputContainer textarea::placeholder { color: #ffffff !important; }
+    .stChatInputContainer button { color: #38bdf8 !important; }
     
-    /* 7. チャットボックス：薄ガラスのコンテナデザイン */
     [data-testid="stChatMessage"] {
         background-color: rgba(255, 255, 255, 0.02) !important;
         backdrop-filter: blur(16px) !important;
@@ -101,111 +77,77 @@ st.markdown("""
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     }
     
-    /* 8. テキスト表示の完全ホワイトアウトとマークダウンの正常化 */
-    [data-testid="stChatMessage"] p, 
-    [data-testid="stChatMessage"] li, 
-    [data-testid="stChatMessage"] ol, 
-    [data-testid="stChatMessage"] ul, 
-    [data-testid="stChatMessage"] span, 
-    [data-testid="stChatMessage"] strong,
-    div[data-testid="stChatMessage"] * {
+    [data-testid="stChatMessage"] p, [data-testid="stChatMessage"] li, 
+    [data-testid="stChatMessage"] ol, [data-testid="stChatMessage"] ul, 
+    [data-testid="stChatMessage"] span, [data-testid="stChatMessage"] strong, div[data-testid="stChatMessage"] * {
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
         font-size: 0.98rem !important;
         line-height: 1.8 !important;
-        letter-spacing: -0.005em !important;
     }
     
-    /* 箇条書きのリストインデント幅を美しく確保 */
     [data-testid="stChatMessage"] ul, [data-testid="stChatMessage"] ol {
         padding-left: 1.5rem !important;
         margin-top: 0.5rem !important;
         margin-bottom: 0.5rem !important;
     }
     
-    /* ハイパーリンク設定 */
     [data-testid="stChatMessage"] a {
         color: #38bdf8 !important;
         -webkit-text-fill-color: #38bdf8 !important;
         text-decoration: none !important;
         font-weight: 600 !important;
         border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-        transition: all 0.2s ease;
-    }
-    [data-testid="stChatMessage"] a:hover {
-        color: #c084fc !important;
-        -webkit-text-fill-color: #c084fc !important;
-        border-bottom-color: rgba(192, 132, 252, 0.6);
     }
     
-    /* 9. Streamlitの標準アイコンボックスを完全に非表示 */
-    [data-testid="stChatMessageAvatar"] {
-        display: none !important;
-    }
-    div[data-testid="stChatMessage"] > div:first-child {
-        display: none !important;
-    }
+    [data-testid="stChatMessageAvatar"], div[data-testid="stChatMessage"] > div:first-child { display: none !important; }
     
-    /* 10. 🛠️ Gemini風ヘッダーレイアウト（丸と名前を上に配置） */
-    .gemini-header {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 1rem; /* テキストとの間に洗練された余白を確保 */
-    }
-    
-    .avatar-ai {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
-        box-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
-    }
-    
-    .avatar-user {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-        box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
-    }
-    
-    .brand-name {
-        font-size: 0.9rem !important;
-        font-weight: 600 !important;
-        letter-spacing: -0.01em !important;
-        opacity: 0.9;
-    }
-    
-    /* ミニマルなローディングプログレスバー */
-    div[data-testid="stProgress"] > div {
-        color: #ffffff !important;
-        font-size: 0.9rem !important;
-    }
-    div[data-testid="stProgress"] > div > div > div > div {
-        background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%) !important;
-        height: 3px !important;
-    }
-    
-    hr {
-        border-color: rgba(255, 255, 255, 0.06) !important;
-        margin: 2.5rem 0 !important;
-    }
+    .gemini-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+    .avatar-ai { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); box-shadow: 0 0 12px rgba(168, 85, 247, 0.5); }
+    .avatar-user { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); box-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+    .brand-name { font-size: 0.9rem !important; font-weight: 600 !important; opacity: 0.9; }
+    div[data-testid="stProgress"] > div { color: #ffffff !important; }
+    div[data-testid="stProgress"] > div > div > div > div { background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%) !important; height: 3px !important; }
+    hr { border-color: rgba(255, 255, 255, 0.06) !important; margin: 2.5rem 0 !important; }
 </style>
 """, unsafe_allow_html=True)
 
-DB_FILE = "kieres_ai_logs.db"
+# --- 📊 Googleスプレッドシート（データベース）接続設定 ---
+# GCPで取得したJSONキーの中身を、GCRの環境変数から取得します
+google_creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
 
-def init_db():
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS chat_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, session_id TEXT, user_input TEXT, ai_response TEXT, detected_lang TEXT)")
-    cursor.execute("CREATE TABLE IF NOT EXISTS click_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, session_id TEXT, ai_name TEXT, url TEXT)")
-    conn.commit()
-    conn.close()
+chat_sheet = None
+click_sheet = None
 
-init_db()
+if google_creds_json:
+    try:
+        creds_dict = json.loads(google_creds_json)
+        scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        client = gspread.authorize(creds)
+        
+        # ⚠️ ここにメモしたスプレッドシートIDを貼り付けてください！
+        SPREADSHEET_ID = "ここにスプレッドシートIDを貼り付ける"
+        
+        spreadsheet = client.open_by_key(SPREADSHEET_ID)
+        chat_sheet = spreadsheet.worksheet("chat_logs")
+        click_sheet = spreadsheet.worksheet("click_logs")
+    except Exception as e:
+        st.error(f"データベース接続エラー: {e}")
 
+def save_chat_log(user_input, ai_response, lang):
+    if chat_sheet:
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        session_id = st.session_state.get("session_token", "unknown")
+        chat_sheet.append_row([timestamp, session_id, user_input, ai_response, lang])
+
+def save_click_log(ai_name, url):
+    if click_sheet:
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        session_id = st.session_state.get("session_token", "unknown")
+        click_sheet.append_row([timestamp, session_id, ai_name, url])
+
+# --- AIデータベース読み込み ---
 def load_ai_database():
     json_path = "ai_data.json"
     if os.path.exists(json_path):
@@ -219,20 +161,6 @@ AI_MASTER_TEXT = json.dumps(AI_LIST_DATA, ensure_ascii=False, indent=2)
 if "session_token" not in st.session_state:
     st.session_state["session_token"] = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
-def save_chat_log(user_input, ai_response, lang):
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO chat_logs (timestamp, session_id, user_input, ai_response, detected_lang) VALUES (?, ?, ?, ?, ?)", (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), st.session_state["session_token"], user_input, ai_response, lang))
-    conn.commit()
-    conn.close()
-
-def save_click_log(ai_name, url):
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO click_logs (timestamp, session_id, ai_name, url) VALUES (?, ?, ?, ?)", (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), st.session_state["session_token"], ai_name, url))
-    conn.commit()
-    conn.close()
-
 query_params = st.query_params
 if "click_target_name" in query_params and "click_target_url" in query_params:
     target_name = query_params["click_target_name"]
@@ -241,14 +169,13 @@ if "click_target_name" in query_params and "click_target_url" in query_params:
     st.markdown(f'<meta http-equiv="refresh" content="0;URL=\'{target_url}\'">', unsafe_allow_html=True)
     st.stop()
 
-# --- タイトル表示 ---
+# --- UI描画 ---
 st.markdown("<div class='main-title'>¿Quieres AI?</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>目的を、最速で現実に。世界中のAIから最適なツールを即答します。</div>", unsafe_allow_html=True)
 st.divider()
 
-# --- 💬 Gemini風：垂直フロースリーム表示 ---
 if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "今日はどんな作業をしますか？"}]
+    st.session_state.messages = [{"role": "assistant", "content": "¡Hola! 今日はどんな作業やリサーチをしますか？"}]
 
 for message in st.session_state.messages:
     is_ai = (message["role"] == "assistant")
@@ -256,24 +183,12 @@ for message in st.session_state.messages:
     display_name = "¿Quieres AI?" if is_ai else "You"
     
     with st.chat_message(message["role"]):
-        # 上部に丸アイコンと名前、下部に100%幅の横書き文章
-        st.markdown(f"""
-        <div class="gemini-header">
-            <div class="{avatar_class}"></div>
-            <div class="brand-name">{display_name}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"<div class='gemini-header'><div class='{avatar_class}'></div><div class='brand-name'>{display_name}</div></div>", unsafe_allow_html=True)
         st.markdown(message["content"])
 
-# --- 入力・応答処理 ---
 if user_input := st.chat_input("ここにメッセージを入力..."):
     with st.chat_message("user"):
-        st.markdown(f"""
-        <div class="gemini-header">
-            <div class="avatar-user"></div>
-            <div class="brand-name">You</div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("<div class='gemini-header'><div class='avatar-user'></div><div class='brand-name'>You</div></div>", unsafe_allow_html=True)
         st.markdown(user_input)
     st.session_state.messages.append({"role": "user", "content": user_input})
     
@@ -284,8 +199,7 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
             api_key = st.secrets.get("OPENAI_API_KEY") or os.environ.get("OPENAI_API_KEY")
             
             if not api_key:
-                response = "⚠️ OpenAI API Keyが設定されていません。"
-                message_placeholder.markdown(response)
+                message_placeholder.markdown("⚠️ OpenAI API Keyが設定されていません。")
             else:
                 try:
                     client = OpenAI(api_key=api_key)
@@ -298,17 +212,13 @@ if user_input := st.chat_input("ここにメッセージを入力..."):
                     completion = client.chat.completions.create(model="gpt-4o-mini", messages=api_messages)
                     response = completion.choices[0].message.content
                     
-                    # 最初の表示時にもヘッダーを付与
-                    st.markdown(f"""
-                    <div class="gemini-header">
-                        <div class="avatar-ai"></div>
-                        <div class="brand-name">¿Quieres AI?</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown("<div class='gemini-header'><div class='avatar-ai'></div><div class='brand-name'>¿Quieres AI?</div></div>", unsafe_allow_html=True)
                     message_placeholder.markdown(response)
+                    
+                    # 🚀 ここでGoogleスプレッドシートに保存されます！
                     save_chat_log(user_input, response, "jp")
+                    
                 except Exception as e:
-                    response = f"エラーが発生しました: {str(e)}"
-                    message_placeholder.markdown(response)
+                    message_placeholder.markdown(f"エラーが発生しました: {str(e)}")
                 
     st.session_state.messages.append({"role": "assistant", "content": response})
