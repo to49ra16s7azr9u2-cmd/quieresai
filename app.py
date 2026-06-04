@@ -156,7 +156,7 @@ if user_input := st.chat_input("どのようなAIツールをお探しですか�
                     stream=True,
                 )
 
-                # 返答をリアルタイムに表示
+              # 返答をリアルタイムに表示
                 for chunk in stream:
                     if chunk.choices[0].delta.content is not None:
                         full_response += chunk.choices[0].delta.content
@@ -168,18 +168,9 @@ if user_input := st.chat_input("どのようなAIツールをお探しですか�
         except Exception as e:
             st.error(f"AIの応答中にエラーが発生しました: {e}")
             full_response = "申し訳ありません。エラーが発生しました。"
-            
 
-            for chunk in stream:
-                if chunk.choices[0].delta.content is not None:
-                    full_response += chunk.choices[0].delta.content
-                    response_placeholder.markdown(full_response + "▌")
-
-            response_placeholder.markdown(full_response)
-
-        except Exception as e:
-            st.error(f"AIの応答中にエラーが発生しました: {e}")
-            full_response = "申し訳ありません。エラーが発生しました。"
-
+    # AIの返答を履歴に保存
     st.session_state.messages.append({"role": "assistant", "content": full_response})
+    
+    # スプレッドシートに保存
     save_chat_log(user_input, full_response)
