@@ -52,7 +52,7 @@ def save_chat_log(user_message, ai_message):
 # ==========================================
 # 4. Streamlit UI 画面構築（Quieres AI）
 # ==========================================
-st.set_page_config(page_title="Quieres AI", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="キエレスAI（Quieres AI）", page_icon="🤖", layout="centered")
 
 # CSSでグラデーションのタイトルと丸いアイコン風デザインを追加
 st.markdown("""
