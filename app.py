@@ -54,15 +54,45 @@ def save_chat_log(user_message, ai_message):
 # ==========================================
 st.set_page_config(page_title="Quieres AI", page_icon="🤖", layout="centered")
 
-st.title("💡 Quieres AI")
-st.write("あなたに最適なAIツールを瞬時に提案するコンシェルジュです。")
+# CSSでグラデーションのタイトルと丸いアイコン風デザインを追加
+st.markdown("""
+<style>
+    .title-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .logo-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00E5FF, #8A2BE2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+    }
+    .gradient-text {
+        font-size: 42px;
+        font-weight: 800;
+        background: -webkit-linear-gradient(45deg, #00E5FF, #8A2BE2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+</style>
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+<div class="title-container">
+    <div class="logo-circle">¿?</div>
+    <h1 class="gradient-text">Quieres AI</h1>
+</div>
+""", unsafe_allow_html=True)
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+st.write("あなたに最適なAIツールを瞬時に提案するAIコンシェルジュです。")
 
 # ==========================================
 # 5. チャットの入力とAIの応答処理
