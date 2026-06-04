@@ -1,0 +1,18 @@
+[theme]
+# 全体をダークモードに固定
+base="dark"
+
+# アクセントカラー（シリコンバレー風の鮮やかなシアンブルー）
+primaryColor="#00E5FF"
+
+# 背景色（完全な黒ではなく、高級感のあるディープグレー）
+backgroundColor="#0A0A0A"
+
+# 入力欄などのサブ背景色
+secondaryBackgroundColor="#1A1A1A"
+
+# 文字色（真っ白ではなく、少し目に優しいオフホワイト）
+textColor="#F3F4F6"
+
+# フォント（洗練されたサンセリフ体）
+font="sans serif"
