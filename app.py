@@ -92,7 +92,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.write("あなたに最適なAIツールを瞬時に提案するAIコンシェルジュです。")
+st.write("キエレスAIは、あなたに最適なAIツールを瞬時に提案するAIコンシェルジュです。")
 
 # 🚨 ここが超重要！チャット履歴の箱を準備するコード
 if "messages" not in st.session_state:
