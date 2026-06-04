@@ -94,6 +94,15 @@ st.markdown("""
 
 st.write("あなたに最適なAIツールを瞬時に提案するAIコンシェルジュです。")
 
+# 🚨 ここが超重要！チャット履歴の箱を準備するコード
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# 過去のチャット履歴を画面に再描画する
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
 # ==========================================
 # 5. チャットの入力とAIの応答処理
 # ==========================================
