@@ -143,15 +143,31 @@ if user_input := st.chat_input("どのようなAIツールをお探しですか�
             プロフェッショナルかつ、初心者に寄り添った分かりやすいトーンで回答してください。
             """
 
-            # OpenAI APIの呼び出し
-            stream = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    *[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
-                ],
-                stream=True,
-            )
+            # ⏳ ここにローディングアニメーションを追加！
+            with st.spinner("AIが世界中のツールから最適なものを厳選・比較しています..."):
+                
+                # OpenAI APIの呼び出し
+                stream = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        *[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
+                    ],
+                    stream=True,
+                )
+
+                # 返答をリアルタイムに表示
+                for chunk in stream:
+                    if chunk.choices[0].delta.content is not None:
+                        full_response += chunk.choices[0].delta.content
+                        response_placeholder.markdown(full_response + "▌")
+
+            # （※withブロックの外に出ることで、ローディングが自動的に消えます）
+            response_placeholder.markdown(full_response)
+
+        except Exception as e:
+            st.error(f"AIの応答中にエラーが発生しました: {e}")
+            full_response = "申し訳ありません。エラーが発生しました。"
             
 
             for chunk in stream:
