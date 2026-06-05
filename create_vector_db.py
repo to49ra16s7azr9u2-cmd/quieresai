@@ -5,7 +5,10 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
 def main():
-    # 1. 保存したCSVファイルの名前を指定（ファイル名が違う場合は書き換えてください）
+    # 🌟【重要】ここに直接キーを書き込みます（Windowsのブロックを完全に回避します）
+    os.environ["OPENAI_API_KEY"] = "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"
+    
+    # 1. 保存したCSVファイルの名前を指定
     csv_file = "ai_models.csv"
     
     if not os.path.exists(csv_file):
