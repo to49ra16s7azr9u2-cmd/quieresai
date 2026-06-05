@@ -2,3 +2,7 @@ streamlit
 openai
 gspread
 google-auth
+
+langchain-community
+langchain-openai
+faiss-cpu
