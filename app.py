@@ -4,6 +4,11 @@ import gspread
 import google.auth
 import openai
 import streamlit as st
+# 🌟 RAG追加: データベースの読み込みに必要な道具をインポート
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+
+
 
 # ==========================================
 # 1. 環境変数からOpenAIの鍵だけを取得
@@ -19,17 +24,17 @@ if not OPENAI_API_KEY:
 # ==========================================
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
+# 🌟 RAG追加: ローカルで動かす場合や、念のためライブラリ側にもキーを認識させるおまじない
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
 @st.cache_resource
 def init_spreadsheet():
     try:
-        # JSONキーを使わず、Cloud Runの標準機能で安全に自動認証する
         credentials, project = google.auth.default(scopes=[
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/drive"
         ])
         gc = gspread.authorize(credentials)
-        
-        # ご自身のスプレッドシート名
         sh = gc.open("quieresai_logs")
         return sh.worksheet("chat_logs")
     except Exception as e:
@@ -37,6 +42,19 @@ def init_spreadsheet():
         return None
 
 worksheet = init_spreadsheet()
+
+# 🌟 RAG追加: データベース（カンペ箱）を1回だけ読み込む関数
+@st.cache_resource
+def load_vector_db():
+    try:
+        embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+        # 先ほど生成に成功した「faiss_index」フォルダを読み込みます
+        return FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
+    except Exception as e:
+        st.error(f"データベースの読み込みに失敗しました: {e}")
+        return None
+
+vector_db = load_vector_db()
 
 # ==========================================
 # 3. データをスプレッドシートに保存する関数
@@ -116,6 +134,12 @@ if user_input := st.chat_input("どのようなAIツールをお探しですか�
         full_response = ""
 
         try:
+            # 🌟 RAG追加: ユーザーの質問に最も近いカンペを3つ、裏で偵察してくる
+            context = ""
+            if vector_db:
+                    docs = vector_db.similarity_search(user_input, k=3)
+                    context = "\n\n".join([doc.page_content for doc in docs])
+
             # 🧠 AIへの指示書（リンク＋比較表の完全版！）
             system_prompt = """
             あなたはAIツールの専門コンシェルジュです。ユーザーの目的に合わせて最適なツールを提案してください。
