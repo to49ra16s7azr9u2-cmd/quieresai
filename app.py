@@ -11,7 +11,7 @@ from langchain_community.vectorstores import FAISS
 # ====================================================================
 # 🛡️ 画面保護システム: 予期せぬ赤エラー（トレースバック）の表示を強制シャットアウト
 # ====================================================================
-def hide_stremlit_traceback(exception_type, exception_value, traceback):
+def hide_streamlit_traceback(exception_type, exception_value, traceback):
     # 赤い画面を出す代わりに、オシャレな警告メッセージだけをスマートに表示させる
     st.error("🤖 現在、コンシェルジュがシステムの定期メンテナンスを行っています。時間を置いて再度アクセスしてください。")
 
