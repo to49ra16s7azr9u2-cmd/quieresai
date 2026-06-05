@@ -16,7 +16,7 @@ def hide_streamlit_traceback(exception_type, exception_value, traceback):
     st.error("🤖 現在、コンシェルジュがシステムの定期メンテナンスを行っています。時間を置いて再度アクセスしてください。")
 
 # Streamlitのエラーハンドラーをご自身のカスタムメッセージにすり替える
-sys.excepthook = hide_stremlit_traceback
+sys.excepthook = hide_streamlit_traceback
 # ==========================================
 # 1. 環境変数からOpenAIの鍵だけを取得
 # ==========================================
