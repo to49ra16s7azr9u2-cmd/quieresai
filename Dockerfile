@@ -1,28 +1,17 @@
-# 1. ベースとなる軽量なPython環境を指定
 FROM python:3.11-slim
 
-# 2. コンテナ内の作業ディレクトリを設定
 WORKDIR /app
 
-# 3. コンテナの動作に必要なシステムツールをインストール（不要なものを削除済！）
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    git \
-    sqlite3 \
-    && rm -rf /var/lib/apt/lists/*
+# 必要なシステムファイルをコピー
+COPY requirements.txt .
 
-# 4. ローカルのファイルをすべてコンテナ内にコピー
+# 🛡️ 修正ポイント：requirements.txt に書かれたすべての道具（langchain等）を本番サーバーに確実にインストールさせる
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 残りのプログラムファイルをコピー
 COPY . .
 
-# 5. 必要なPythonライブラリを一括インストール
-RUN pip install --no-cache-dir streamlit openai gspread google-auth
+EXPOSE 8081
 
-# 6. Streamlitが使用するポート番号（8080）を開放
-EXPOSE 8080
-
-# 7. 起動時のStreamlitの動作バグを防ぐ設定
-ENV STREAMLIT_SERVER_PORT=8080
-ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
-
-# 8. アプリの起動コマンド
-CMD ["streamlit", "run", "app.py"]
+# 🛡️ 画面保護システム：Streamlitのエラー詳細（赤いトレースバック箱）を画面に絶対出さない設定で起動する
+CMD ["streamlit", "run", "app.py", "--server.port=8081", "--server.address=0.0.0.0", "--client.showErrorDetails=false", "--client.toolbarMode=minimal"]
