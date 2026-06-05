@@ -1,10 +1,34 @@
+import streamlit as st
+
+# ====================================================================
+# 🚀 検索エンジン（SEO）対策: Googleに正しいサイト名と説明文を強制認識させる
+# ====================================================================
+# Streamlitの標準設定。これが一番最初に実行されることで、Googleロボットに正しい情報を渡します。
+st.set_page_config(
+    page_title="Quieres AI (キエレスAI) - 最適なAIツールが見つかるコンシェルジュ",
+    page_icon="🤖",
+    layout="centered"
+)
+
+# 💡 既存のコードにある「st.set_page_config」が115行目あたりに残っている場合は、
+# エラーを避けるためにそちら（古いほう）を1行まるごと削除してください！
+# ====================================================================
+
 import datetime
 import os
 import sys
 import gspread
 import google.auth
 import openai
-import streamlit as st
+# (ここから下は既存のコードのままでOKです)
+
+import datetime
+import os
+import sys
+import gspread
+import google.auth
+import openai
+
 # 🌟 RAG追加: データベースの読み込みに必要な道具をインポート
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -82,8 +106,6 @@ def save_chat_log(user_message, ai_message):
 # ==========================================
 # 4. Streamlit UI 画面構築（Quieres AI）
 # ==========================================
-# 💡 カタカナ併記に変更し、検索エンジンに強くしました！
-st.set_page_config(page_title="Quieres AI (キエレスAI) - AIツールコンシェルジュ", page_icon="🤖", layout="centered")
 
 # CSSでグラデーションのタイトルと丸いアイコン風デザインを追加
 st.markdown("""
