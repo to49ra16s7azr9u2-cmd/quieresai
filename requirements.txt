@@ -6,3 +6,5 @@ google-auth
 langchain-community
 langchain-openai
 faiss-cpu
+
+numpy==1.26.4
