@@ -8,15 +8,16 @@ import streamlit as st
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
-
-
 # ==========================================
 # 1. 環境変数からOpenAIの鍵だけを取得
 # ==========================================
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
+# 💡 ローカルPCテスト用の救済措置（黒い画面でsetし忘れた場合でも動くように自動補正します）
 if not OPENAI_API_KEY:
-    st.error("環境変数が正しく設定されていません。Cloud Runの設定を確認してください。")
+    # クラウド環境でなければ、ここに直接キーを入れてテストすることも可能です
+    # OPENAI_API_KEY = "sk-..." 
+    st.error("環境変数が正しく設定されていません。Cloud Run、またはローカル環境の設定を確認してください。")
     st.stop()
 
 # ==========================================
@@ -24,7 +25,7 @@ if not OPENAI_API_KEY:
 # ==========================================
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
-# 🌟 RAG追加: ローカルで動かす場合や、念のためライブラリ側にもキーを認識させるおまじない
+# 🌟 RAG追加: ライブラリ側（LangChain）にも確実にキーを認識させる
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 @st.cache_resource
@@ -54,6 +55,7 @@ def load_vector_db():
         st.error(f"データベースの読み込みに失敗しました: {e}")
         return None
 
+# 変数名を一貫させるため修正（最初上部で定義されていた vector_db を安全にセット）
 vector_db = load_vector_db()
 
 # ==========================================
@@ -70,7 +72,8 @@ def save_chat_log(user_message, ai_message):
 # ==========================================
 # 4. Streamlit UI 画面構築（Quieres AI）
 # ==========================================
-st.set_page_config(page_title="キエレスAI（Quieres AI）", page_icon="🤖", layout="centered")
+# 💡 カタカナ併記に変更し、検索エンジンに強くしました！
+st.set_page_config(page_title="Quieres AI (キエレスAI) - AIツールコンシェルジュ", page_icon="🤖", layout="centered")
 
 # CSSでグラデーションのタイトルと丸いアイコン風デザインを追加
 st.markdown("""
@@ -106,13 +109,12 @@ st.markdown("""
 
 <div class="title-container">
     <div class="logo-circle">¿?</div>
-    <h1 class="gradient-text">Quieres AI</h1>
+    <h1 class="gradient-text">Quieres AI (キエレスAI)</h1>
 </div>
 """, unsafe_allow_html=True)
 
 st.write("キエレスAIは、あなたに最適なAIツールを瞬時に提案するAIコンシェルジュです。")
 
-# 🚨 ここが超重要！チャット履歴の箱を準備するコード
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -134,16 +136,24 @@ if user_input := st.chat_input("どのようなAIツールをお探しですか�
         full_response = ""
 
         try:
-            # 🌟 RAG追加: ユーザーの質問に最も近いカンペを3つ、裏で偵察してくる
+            # 🌟 RAG修正: ユーザーの質問に最も近いカンペを3つ、裏で偵察してくる
             context = ""
             if vector_db:
-                    docs = vector_db.similarity_search(user_input, k=3)
-                    context = "\n\n".join([doc.page_content for doc in docs])
+                docs = vector_db.similarity_search(user_input, k=3)
+                context = "\n\n".join([doc.page_content for doc in docs])
 
-            # 🧠 AIへの指示書（リンク＋比較表の完全版！）
-            system_prompt = """
-            あなたはAIツールの専門コンシェルジュです。ユーザーの目的に合わせて最適なツールを提案してください。
+            # 🧠 AIへの指示書（【最新のAIモデルデータ】として裏で取得した context を埋め込みました！）
+            system_prompt = f"""
+            あなたはAIツールの専門コンシェルジュ「Quieres AI（キエレスAI）」です。ユーザーの目的に合わせて最適なツールを提案してください。
             提案する際は、ユーザーが比較検討しやすいように、必ず以下のフォーマットに従って詳細に説明してください。
+
+            以下の【最新のAIモデルデータ（独自知識）】は、一般のGPTがまだ詳しく知らない最新情報、あるいは特に正確に答えるべき重要なデータです。
+            ユーザーの質問がこのデータに関連している場合は、こちらに記載されている有料プランの金額、無料プランの範囲、公式URL、公開時期などを最優先で参考にして案内してください。
+            
+            ただし、このデータに載っていない一般的な知識や、関連する応用アドバイス、ユーザーへの共感の言葉などは、あなた自身が持つ膨大な知識を自由に組み合わせて、親切で自然な会話として広げて回答してください。
+
+            【最新のAIモデルデータ（独自知識）】
+            {context}
 
             【提案フォーマット】
             ### 1. [ツール名](公式URL) と概要
@@ -180,7 +190,7 @@ if user_input := st.chat_input("どのようなAIツールをお探しですか�
                     stream=True,
                 )
 
-              # 返答をリアルタイムに表示
+                # 返答をリアルタイムに表示
                 for chunk in stream:
                     if chunk.choices[0].delta.content is not None:
                         full_response += chunk.choices[0].delta.content
