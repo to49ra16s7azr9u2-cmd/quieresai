@@ -253,7 +253,7 @@ with tab2:
 
     # 入力フォームの作成
     with st.form("consulting_form"):
-        current_tools = st.text_area("現在使っているAIツールをすべて教えてください", placeholder="例: DeepL、Midjourney、Notion、Zoomの文字起こし")
+        current_tools = st.text_area("現在使っているAIツールをすべて教えてください", placeholder="例: DeepL、Midjourney、Notion")
         use_cases = st.text_area("それぞれの用途を教えてください", placeholder="例: 英語の論文翻訳、プレゼン用の画像作成、会議の議事録まとめ")
         current_cost = st.text_input("現在の月額コストの合計（任意）", placeholder="例: 月々5,000円くらい")
         
