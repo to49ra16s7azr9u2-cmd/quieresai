@@ -154,7 +154,7 @@ st.markdown("""
 </style>
 <div class="nav-links">
     <a href="/" target="_self">💬 AIチャット</a> | 
-    <a href="https://[あなたのユーザー名].github.io/quieresai/" target="_blank">📊 対応AIツール一覧表（450選）</a>
+    <a href="https://to49ra16s7azr9u2-cmd.github.io/quieresai/" target="_blank">📊 対応AIツール一覧表（450選）</a>
 </div>
 """, unsafe_allow_html=True)
 # 💡 ここまで追加 -----------------------------------------
