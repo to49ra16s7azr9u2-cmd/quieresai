@@ -145,6 +145,21 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# 💡 ここから追加 -----------------------------------------
+st.markdown("""
+<style>
+    .nav-links { margin-bottom: 20px; font-size: 15px; font-weight: bold; }
+    .nav-links a { color: #8A2BE2; text-decoration: none; padding: 5px 10px; border-radius: 5px; transition: background 0.3s; }
+    .nav-links a:hover { background: #f0e6fa; }
+</style>
+<div class="nav-links">
+    <a href="/" target="_self">💬 AIチャット</a> | 
+    <a href="https://[あなたのユーザー名].github.io/quieresai/" target="_blank">📊 対応AIツール一覧表（450選）</a>
+</div>
+""", unsafe_allow_html=True)
+# 💡 ここまで追加 -----------------------------------------
+
+
 st.write("キエレスAIは、あなたに最適なAIツールを瞬時に提案するAIコンシェルジュです。")
 
 if "messages" not in st.session_state:
