@@ -14,13 +14,7 @@ st.set_page_config(
 # エラーを避けるためにそちら（古いほう）を1行まるごと削除してください！
 # ====================================================================
 
-import datetime
-import os
-import sys
-import gspread
-import google.auth
-import openai
-# (ここから下は既存のコードのままでOKです)
+
 
 import datetime
 import os
